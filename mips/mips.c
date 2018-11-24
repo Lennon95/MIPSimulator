@@ -1,12 +1,9 @@
 #include <stdio.h>
-
 #include "mips.h"
+#include "datapath/register.h"
+#include "datapath/alu.h"
+#include "datapath/mux.h"
+#include "datapath/imemory.h"
+#include "datapath/dmemory.h"
 
-struct registerFile {
-	long int genPurpose[32]; // Registradores de proposito geral
-	long int __PC;
-	long int __IR;
-}
-
-
-
+void init()

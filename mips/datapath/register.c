@@ -1,17 +1,18 @@
-#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
-
 #include "registerFile.h"
 
 typedef struct s_registerFile {
-	long int genPurpose[32]; // Registradores de proposito geral
-	long int __PC;
-	long int __IR;
+	int32_t genPurpose[32]; // Registradores de proposito geral
+	int32_t* _PC;
+	int32_t* _IR;
 } registerFile;
 
 registerFile* newRegisterFile()
 {
 	registerFile* regFile = malloc(sizeof(registerFile));
+	regfile->_PC = malloc(sizeof(int32_t);
+	regfile->_IR = malloc(sizeof(int32_t);
 	resetRegisterFile(regFile);
 
 	return regFile;
@@ -19,8 +20,8 @@ registerFile* newRegisterFile()
 
 void resetRegisterFile(registerFile* regFile)
 {
-	regFile->__PC = 0x0;
-	regFile->__IR = 0x0;
+	regFile->*_PC = 0x0;
+	regFile->*_IR = 0x0;
 	for (int i = 0; i < 32; i++) {
 		regFile->genPurpose[i] = 0x0;
 	}
