@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <string.h>
+#include "gui.h"
 
 static GtkTextBuffer* regBuff;
 static GtkTextBuffer* memBuff;
