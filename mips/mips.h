@@ -8,6 +8,6 @@
 #ifndef MIPS_HEADER
 #define MIPS_HEADER
 
-// Functions declaration
+// @TODO Functions declaration
 
 #endif

@@ -1,27 +1,26 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include "dmemory.h"
 
 // 10MB Data Memory
 #define MEMORY_SIZE (10*1024*1024)
 
-static void* data = NULL;
+static int32_t* data;
 
 void initDataMem()
 {
 	free(data);
-	data = malloc(MEMORY_SIZE);
-	memset(_data, '\0', MEMORY_SIZE);
-
-	return data;
+	data = (int32_t*) malloc(MEMORY_SIZE * sizeof(int32_t));
+	memset(data, '\0', MEMORY_SIZE);
 }
 
-void* readData(void* dest, void* offset, size_t length)
+int32_t readData(int32_t offset)
 {
-	return memcpy(dest, (data + offset), length);
+	return *(data + offset);
 }
 
-bool writeData(void* src, void* offset, size_t length)
+void writeData(void* src, void* offset, size_t length)
 {
-	return memcpy((data + offset), src, length);
+	memcpy((data + offset), src, length);
 }

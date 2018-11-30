@@ -3,7 +3,7 @@
 
 // Declarations
 void initDataMem();
-void* readData(void* dest, void* offset, size_t length);
-bool writeData(void* src, void* offset, size_t length);
+int32_t readData(int32_t offset);
+void writeData(void* src, void* offset, size_t length);
 
 #endif

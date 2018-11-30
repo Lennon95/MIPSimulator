@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include "mips.h"
 #include "datapath/register.h"
 #include "datapath/imemory.h"
 #include "datapath/dmemory.h"
 
-static registerFile* _regs; 
+static registerFile*	_regs;
+static int32_t*		_memData;
+static int32_t*		_instData;
 
 enum _INSTRUCTIONS = {
 	LUI, ORI, ADDIU, LW,
@@ -31,6 +34,7 @@ void init(int32_t* instructions, size_t len)
 {
 	_regs = newRegisterFile();
 	setPC(_regs, *instructions);
+//	initDataMem();
 }
 
 
@@ -50,13 +54,13 @@ void execute()
 	char funct = instruction & 0x3F;
 
 	// instrucoes tipo-I
-	int16_t imm = (instruction & 0xFFFF);
+	int32_t imm = (instruction & 0x0000FFFF);
 
 	// instrucoes tipo-J
 	int32_t addr = (instruction & 0x03FFFFFF);
 
+	int32_t result;
 	if (opcode == 0x0) { // Somente instrucoes tipo-R tem opcode 0x0 nesse conjunto de instrucoes
-		int32_t result
 		switch (funct) {
 			case _FUNCT[XOR]:
 			result = getReg(_regs, (int )rs) ^ getReg(_regs, (int ) rt);
@@ -73,11 +77,54 @@ void execute()
 			case _FUNCT[SLL]:
 			result = getReg(_regs, (int )rt) << funct;
 			break;
+
 			case _FUNCT[SLR]:
-			result = getReg(_regs, (int )rs) ^ getReg(_regs, (int ) rt);
+			result = getReg(_regs, (int )rt) ^ >> funct;
 			break;
-		
+		}
+		setReg(_regs, (int ) rd, result);
+		// char* c = (char* ) malloc(30 * sizeof(char));
+		// sprintf(c, "Registrador $%d: %x", (int )rd,  getReg(_regs));
+		// updateRegBuff(c, 30);
+	} else {
+		switch (opcode) {
+			case _OPCODES[LUI]:
+			result = imm << 16;
+			setReg(_regs, (int ) rt, result);		
+			break;
+
+			case _OPCODES[ORI]:
+			result = getReg(_regs, (int ) rs) | imm;
+			setReg(_regs, (int ) rt, result);		
+			break;
+
+			case _OPCODES[ADDIU]:
+			result = getReg(_regs, (int ) rs) + imm;
+			setReg(_regs, (int ) rt, result);		
+			break;
+
+			case _OPCODES[LW]:
+			result = *(getReg(_regs, (int ) rs) + imm);
+			setReg(_regs, (int ) rt, result);		
+			break;
+
+			case _OPCODES[SW]:
+			result = getReg(_regs, (int ) rt);
+			memcpy(getReg(_regs, (int ) rs) + imm, result, sizeof(int32_t));
+			break;
 			
-		}	
+			case _OPCODES[BEQ]:
+
+			break;
+
+			case _OPCODES[J]:
+			break;
+
+			case _OPCODES[ANDI]:
+			result = getReg(_regs, (int ) rs) & imm;
+			setReg(_regs, (int ) rt, result);
+			break;
+		}
+	}
 	
 }

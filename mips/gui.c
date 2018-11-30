@@ -6,22 +6,22 @@ static GtkTextBuffer* regBuff;
 static GtkTextBuffer* memBuff;
 static GtkTextBuffer* _stdout;
 
-static void updateRegBuff (const char* text, gint len)
+void updateRegBuff (const char* text, gint len)
 {
 	gtk_text_buffer_set_text(regBuff, text, len);
 }
 
-static void updateMemBuff (const char* text, gint len)
+void updateMemBuff (const char* text, gint len)
 {
 	gtk_text_buffer_set_text(memBuff, text, len);
 }
 
-static void updateStdout (const char* text, gint len)
+void updateStdout (const char* text, gint len)
 {
 	gtk_text_buffer_set_text(_stdout, text, len);
 }
 
-static void open_file (GtkWidget *widget, gpointer data)
+void open_file (GtkWidget *widget, gpointer data)
 {
 	GtkWidget *dialog;
 	GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
