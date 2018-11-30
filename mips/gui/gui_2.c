@@ -1,8 +1,50 @@
 #include <gtk/gtk.h>
+#include <string.h>
 
-static void print_hello (GtkWidget *widget, gpointer data)
+static GtkTextBuffer* regBuff;
+static GtkTextBuffer* memBuff;
+static GtkTextBuffer* _stdout;
+
+static void updateRegBuff (const char* text, gint len)
 {
-	g_print ("Hello World\n");
+	gtk_text_buffer_set_text(regBuff, text, len);
+}
+
+static void updateMemBuff (const char* text, gint len)
+{
+	gtk_text_buffer_set_text(memBuff, text, len);
+}
+
+static void updateStdout (const char* text, gint len)
+{
+	gtk_text_buffer_set_text(_stdout, text, len);
+}
+
+static void open_file (GtkWidget *widget, gpointer data)
+{
+	GtkWidget *dialog;
+	GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+	gint res;
+
+	dialog = gtk_file_chooser_dialog_new ("Abrir arquivo",
+                                      NULL,
+                                      action,
+                                      "_Cancelar",
+                                      GTK_RESPONSE_CANCEL,
+                                      "_Abrir",
+                                      GTK_RESPONSE_ACCEPT,
+                                      NULL);
+
+	res = gtk_dialog_run (GTK_DIALOG (dialog));
+	if (res == GTK_RESPONSE_ACCEPT) {
+    		char *filename;
+    		GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+    		filename = gtk_file_chooser_get_filename (chooser);
+		updateStdout(filename, strlen(filename));
+    		// open_file (filename);
+		g_free (filename);
+	}
+	gtk_widget_destroy (dialog);
 }
 
 static void activate (GtkApplication *app, gpointer user_data)
@@ -26,7 +68,7 @@ static void activate (GtkApplication *app, gpointer user_data)
 	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
 	button = gtk_builder_get_object (builder, "button-open");
-	g_signal_connect (button, "activate", G_CALLBACK (print_hello), NULL);
+	g_signal_connect (button, "activate", G_CALLBACK (open_file), NULL);
 
 	button = gtk_builder_get_object (builder, "button-quit");
 	g_signal_connect_swapped (button, "activate", G_CALLBACK (g_application_quit), app);
@@ -34,9 +76,13 @@ static void activate (GtkApplication *app, gpointer user_data)
 	button = gtk_builder_get_object (builder, "quit");
 	g_signal_connect (button, "clicked", G_CALLBACK (g_application_quit), NULL);
 
+
+	regBuff = GTK_TEXT_BUFFER(gtk_builder_get_object (builder, "reg_buf"));
+	memBuff = GTK_TEXT_BUFFER(gtk_builder_get_object (builder, "data_buf"));
+	_stdout = GTK_TEXT_BUFFER(gtk_builder_get_object (builder, "stdout"));
+
 	gtk_application_add_window (app, GTK_WINDOW(window));
-	gtk_widget_show_all (GTK_WIDGET(window));
-	//gtk_main ();
+	gtk_widget_show_all (GTK_WIDGET(window));	
 }
 
 int main (int argc, char **argv)
