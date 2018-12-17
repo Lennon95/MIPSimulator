@@ -10,22 +10,22 @@ static registerFile*	_regs;
 static int32_t*		_memData;
 static int32_t*		_instData;
 
-enum _INSTRUCTIONS = {
+enum _INSTRUCTIONS {
 	LUI, ORI, ADDIU, LW,
 	SW, BEQ, J, ANDI
 };
 
-enum _FUNCT_INST = {
+enum _FUNCT_INST {
 	XOR, ADDU, SLT,
 	SLL, SRL
 };
 
-const char* _OPCODES = {
+const char _OPCODES[] = {
 	0xF, 0xD, 0x9, 0x24
 	0x2C, 0x4, 0x2, 0xC
 };
 
-const char* _FUNCT = {
+const char _FUNCT[] = {
 	0x26, 0x21, 0x2A
 	0x0, 0x2	
 };
