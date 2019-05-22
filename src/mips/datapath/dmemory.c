@@ -15,7 +15,12 @@ void initDataMem()
 	memset(data, '\0', MEMORY_SIZE);
 }
 
-int32_t readData(int32_t offset)
+int32_t* getActualAddr()
+{
+	return data;
+}
+
+int32_t readData(size_t offset)
 {
 	return *(data + offset);
 }

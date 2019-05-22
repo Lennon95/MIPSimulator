@@ -79,7 +79,7 @@ void execute()
 			break;
 
 			case _FUNCT[SLR]:
-			result = getReg(_regs, (int )rt) ^ >> funct;
+			result = getReg(_regs, (int )rt) >> funct;
 			break;
 		}
 		setReg(_regs, (int ) rd, result);
