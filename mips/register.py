@@ -11,7 +11,7 @@ class Register:
 
 	@property
 	def number(self):
-		return self.number
+		return self.__number
 
 	@property
 	def value(self):
